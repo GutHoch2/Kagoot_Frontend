@@ -9,7 +9,7 @@ export default {
 
 <template>
   <navbar-component></navbar-component>
-  <h1>Hello from HomeView</h1>
+<h1>Hello From Home</h1>
 </template>
 
 <style scoped>
