@@ -1,0 +1,12 @@
+// Bootstrap Variablen vor dem Import überschreiben
+
+// Color Themes: https://colorhunt.co/palette/00309200879effab5bfff2db
+$primary: #003092;
+$dark: #00879E;
+$secondary: #FFAB5B;
+$light: #FFF2DB;
+$info: #A1E3F9;
+$success: #D1F8EF;
+
+// Bootstrap SCSS laden
+@import "bootstrap/scss/bootstrap";
