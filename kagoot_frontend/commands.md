@@ -14,3 +14,9 @@
 
 ## 5. File custom_styles.scss erstellen
 Auf gleicher Ebene wie main.js und mit Inhalt befüllen (siehe direkt im File)
+
+## 6. Fontawesome installieren
+npm install @fortawesome/fontawesome-free
+
+## 7. Fontawesome einbinden in main.js
+import '@fortawesome/fontawesome-free/css/all.min.css'

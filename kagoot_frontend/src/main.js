@@ -11,6 +11,9 @@ import 'bootstrap/scss/bootstrap.scss';
 // Eigene Styles mit Bootstrap überschreiben
 import './custom_styles.scss';
 
+// Fontawesome importieren
+import '@fortawesome/fontawesome-free/css/all.min.css'
+
 const app = createApp(App)
 
 app.use(router)
