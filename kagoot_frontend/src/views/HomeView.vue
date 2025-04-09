@@ -9,7 +9,7 @@ export default {
   <div class="container-fluid bg-dark text-light py-5 min-vh-100 d-flex flex-column align-items-center justify-content-center">
     <header class="text-center mb-5">
       <h1 class="display-3 fw-bold text-glow">Willkommen bei Kagoot</h1>
-      <p class="fs-4 text-secondary fst-italic">Vertraut, aber einfach besser - dein Kagoot!</p>
+      <p class="fs-4 text-secondary fst-italic">Gut, besser, Kagoot!</p>
     </header>
 
     <!-- Kacheln-Bereich -->
@@ -42,6 +42,9 @@ export default {
 <style scoped lang="scss">
 @import "@/custom_styles.scss";
 
+.body{
+  background-image: url("./../assets/images/chalkboard.jpg");
+}
 
 .selection-card {
   border: 1px solid $light;
