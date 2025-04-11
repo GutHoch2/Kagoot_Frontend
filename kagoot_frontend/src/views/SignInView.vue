@@ -85,7 +85,7 @@ export default {
             const token = response.data.TOKEN;
             this.$store.dispatch('login', token); // Vuex Store Login
             this.$emit('login');
-            this.$router.push({name: 'quizmaster'});
+            this.$router.push({name: 'dashboard'});
           })
           .catch(error => {
             if (error.response) {
