@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from "@/views/HomeView.vue";
-import QuizmasterView from "@/views/QuizmasterView.vue";
+import QuizmasterView from "@/views/DashboardView.vue";
 import StartPlayingView from "@/views/StartPlayingView.vue";
 import SignInView from "@/views/SignInView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import AboutView from "@/views/AboutView.vue";
+import DashboardView from "@/views/DashboardView.vue";
+import MyQuizzesView from "@/views/MyQuizzesView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,15 +27,21 @@ const router = createRouter({
       component: SignUpView,
     },
     {
-      path: '/quizmaster',
-      name: 'quizmaster',
-      component: QuizmasterView,
-    },
-    {
       path: '/start-playing',
       name: 'start-playing',
       component: StartPlayingView,
     },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashboardView,
+    },
+    {
+      path: '/my-quizzes',
+      name: 'my-quizzes',
+      component: MyQuizzesView,
+    },
+
     {
       path: '/about',
       name: 'about',

@@ -21,6 +21,12 @@ npm install @fortawesome/fontawesome-free
 ## 7. Fontawesome einbinden in main.js
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
+## 8. Vuex installieren
+npm install vuex@next
+
+## 9. Axios installieren
+npm install axios
+
 ## 8. Um auf GitHub Pages zu deployen
 npm install --save-dev gh-pages   
 "deploy": "gh-pages -d dist" => ergänzen unter scripts in package.json
