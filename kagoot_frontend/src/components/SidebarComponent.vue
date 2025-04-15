@@ -12,6 +12,16 @@
         </router-link>
       </li>
       <li class="nav-item">
+        <router-link class="nav-link text-black" to="/quiz-editor">
+          <i class="fa-solid fa-square-plus me-2"></i> Neues Quiz
+        </router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link text-black" to="/add-question">
+          <i class="fa-solid fa-question me-2"></i> Frage erstellen
+        </router-link>
+      </li>
+      <li class="nav-item">
         <router-link class="nav-link text-black" to="/about">
           <i class="fa-solid fa-user-group me-2"></i> Über uns
         </router-link>

@@ -68,7 +68,7 @@ export default {
 </script>
 
 <template>
-  <navbar-component></navbar-component>
+  <navbar-component :show-additional-content="false"></navbar-component>
   <div
     class="container-fluid bg-dark text-light py-5 min-vh-100 d-flex flex-column align-items-center justify-content-center">
     <header class="text-center mb-5">

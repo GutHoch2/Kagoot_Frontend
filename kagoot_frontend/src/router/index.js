@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from "@/views/HomeView.vue";
-import QuizmasterView from "@/views/DashboardView.vue";
 import StartPlayingView from "@/views/StartPlayingView.vue";
 import SignInView from "@/views/SignInView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import AboutView from "@/views/AboutView.vue";
 import DashboardView from "@/views/DashboardView.vue";
 import MyQuizzesView from "@/views/MyQuizzesView.vue";
+import QuizEditorView from "@/views/QuizEditorView.vue";
+import QuestionAddComponent from "@/components/QuestionAddComponent.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,7 +42,16 @@ const router = createRouter({
       name: 'my-quizzes',
       component: MyQuizzesView,
     },
-
+    {
+      path: '/quiz-editor',
+      name: 'quiz-editor',
+      component: QuizEditorView,
+    },
+    {
+      path: '/add-question',
+      name: 'add-question',
+      component: QuestionAddComponent
+    },
     {
       path: '/about',
       name: 'about',

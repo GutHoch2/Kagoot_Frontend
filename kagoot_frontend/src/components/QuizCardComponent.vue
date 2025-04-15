@@ -1,0 +1,56 @@
+<script>
+export default {
+  name: "QuizCardComponent",
+  props: {
+    imagePath: {
+      type: String,
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    description: {
+      type: String,
+      required: false
+    },
+    buttonLink: {
+      type: String,
+      required: true
+    }
+  }
+}
+</script>
+
+<template>
+  <a href="#">
+    <div class="card m-2" style="width: 18rem;">
+      <img v-bind:src="imagePath" class="card-img-top" alt="quiz image">
+      <div class="card-body">
+        <h5 class="card-title">{{ title }}</h5>
+        <p class="card-text">{{ description }}</p>
+      </div>
+    </div>
+  </a>
+</template>
+
+<style scoped lang="scss">
+@import "@/custom_styles.scss";
+
+
+a{
+  text-decoration: none;
+}
+.card {
+  border: 1px solid $light;
+  box-shadow: 0 0 15px $light;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 0 30px whitesmoke;
+  border-color: $secondary;
+}
+</style>
