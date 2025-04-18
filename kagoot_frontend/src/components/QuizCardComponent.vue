@@ -43,14 +43,13 @@ a{
 }
 .card {
   border: 1px solid $light;
-  box-shadow: 0 0 15px $light;
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 0 30px whitesmoke;
+  box-shadow: 0 0 20px whitesmoke;
   border-color: $secondary;
 }
 </style>

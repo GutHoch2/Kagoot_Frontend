@@ -12,8 +12,13 @@
         </router-link>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link text-black" to="/quiz-editor">
+        <router-link class="nav-link text-black" to="/quiz-creator">
           <i class="fa-solid fa-square-plus me-2"></i> Neues Quiz
+        </router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link text-black" to="/quiz-editor">
+          <i class="fa-solid fa-question me-2"></i> Quiz Editor
         </router-link>
       </li>
       <li class="nav-item">

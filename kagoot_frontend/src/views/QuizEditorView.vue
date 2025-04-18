@@ -1,36 +1,37 @@
 <script>
-import axios from "axios";
 import LayoutWrapper from "@/components/LayoutWrapper.vue";
-import ErrorMessageComponent from "@/components/ErrorMessageComponent.vue";
+import axios from "axios";
+import QuestionCardComponent from "@/components/QuestionCardComponent.vue";
 
 export default {
   name: "QuizEditorView",
-  components: {ErrorMessageComponent, LayoutWrapper},
-  data() {
+  components: {QuestionCardComponent, LayoutWrapper},
+  data(){
     return {
-      imagePath: "",
-      title: '',
-      description: '',
-      buttonLink: '',
-      errors: []
+      quiz : {},
+      quizId : ''
     }
   },
+  mounted() {
+    const token = localStorage.getItem('token');
+    this.quizId = this.$route.params.id;
+    console.log(this.quizId);
+
+    axios
+    .post('api/quizmanager/quiz/get', this.quizId, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => {
+        this.quiz = response.data.OBJECT;
+        console.log(response.data.OBJECT);
+      })
+  },
   methods: {
-    submitForm() {
-      const quiz = {
-        title: this.title,
-      };
-
-      const token = localStorage.getItem('token');
-
-      axios
-        .post('api/quizmanager/quiz/add', quiz,  {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }})
-        .then((response) => {
-          console.log(response.data);
-        })
+    addNewQuestion(){
+      this.$router.push({path: `/${this.quizId}/add-question/`});
     }
   }
 }
@@ -41,47 +42,20 @@ export default {
     <div
       class="container-fluid bg-dark text-light py-5 min-vh-100 d-flex flex-column align-items-center justify-content-center">
       <header class="text-center mb-5">
-        <h1 class="display-3 fw-bold text-glow">Neues Quiz erstellen</h1>
+        <h1 class="display-3 fw-bold text-glow">Quiz: {{quiz.title}}</h1>
         <p class="fs-4 text-secondary fst-italic">Gestalte dein ganz besonderes Quiz!</p>
-      </header>
-      <!-- Formular-Bereich -->
-      <div class="row w-100 justify-content-center gx-5">
-        <div class="col-md-8 col-12 mb-4">
-          <div class="card bg-dark border-light text-light">
-            <div class="card-body p-5">
-              <form @submit.prevent="submitForm">
-                <div class="mb-3">
-                  <label for="titel" class="form-label">Quiz-Titel</label>
-                  <input
-                    v-model="title"
-                    type="text"
-                    class="form-control bg-dark text-light border-light"
-                    id="title"
-                    placeholder="Bitte gib einen Quiz-Titel ein"
-                    required>
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Quiz-Beschreibung</label>
-                  <textarea
-                    v-model="description"
-                    type="textarea"
-                    rows="5"
-                    class="form-control bg-dark text-light border-light"
-                    id="description"
-                    placeholder="Kurze Beschreibung deines Quizzes">
-                    </textarea>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Quiz erstellen</button>
-                <error-message-component
-                  class="mt-3"
-                  v-if="errors.length"
-                  :errors="errors"
-                ></error-message-component>
-              </form>
-            </div>
+        <div class="row">
+          <div>
+            <div v-for="question in quiz.questions" :key="question.id">
+            <question-card-component
+              :question-type="question['@type']"
+              :question="question.text"
+              :counter="1" image-path="">
+            </question-card-component></div>
+            <button @click="addNewQuestion" class="btn btn-primary w-100">Neue Frage hinzufügen</button>
           </div>
         </div>
-      </div>
+      </header>
     </div>
   </layout-wrapper>
 </template>

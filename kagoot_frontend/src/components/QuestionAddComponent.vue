@@ -1,5 +1,6 @@
 <script>
 import ErrorMessageComponent from "@/components/ErrorMessageComponent.vue";
+import axios from "axios";
 
 export default {
   name: "QuestionAddComponent",
@@ -10,10 +11,25 @@ export default {
       question : '',
       trueFalseAnswer: false,
       multipleChoiceOptions: ['',''],
+      quizId : '',
       errors : []
     }
   },
+  mounted() {
+    this.quizId = this.$route.params.id;
+  },
   methods : {
+    executeRequest(urlPath, payload ){
+      const token = localStorage.getItem('token');
+
+      axios
+        .post(urlPath, payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+    },
     addOption() {
       this.multipleChoiceOptions.push('');
     },
@@ -22,17 +38,22 @@ export default {
     },
     submitForm() {
       let payload = {
-        question: this.question,
-        type: this.questionType
+        "score": 10,
+        "seconds": 20,
+        text: this.question,
+        "positionInQuiz": 1,
+        "quizUUID": this.quizId,
       };
 
       if (this.questionType === 'multipleChoice') {
         payload.options = this.multipleChoiceOptions;
+        this.executeRequest('/api/quizmanager/question/true-or-false/add' ,payload);
       } else if (this.questionType === 'trueFalse') {
-        payload.correctAnswer = this.trueFalseAnswer === 'true';
+        payload.correct = this.trueFalseAnswer;
+        this.executeRequest('api/quizmanager/question/true-or-false/add', payload);
       }
-
       console.log("Abgeschickte Frage:", payload);
+      this.$router.push(`/quiz-editor/${this.quizId}`);
 
     }
   }
