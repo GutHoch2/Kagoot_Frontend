@@ -46,11 +46,11 @@ export default {
         <p class="fs-4 text-secondary fst-italic">Gestalte dein ganz besonderes Quiz!</p>
         <div class="row">
           <div>
-            <div v-for="question in quiz.questions" :key="question.id">
+            <div v-for="(question, index) in quiz.questions" :key="question.id">
             <question-card-component
               :question-type="question['@type']"
               :question="question.text"
-              :counter="1">
+              :counter="index + 1">
             </question-card-component>
             </div>
             <button @click="addNewQuestion" class="btn btn-primary w-100">Neue Frage hinzufügen</button>
