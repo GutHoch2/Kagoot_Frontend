@@ -50,8 +50,9 @@ export default {
             <question-card-component
               :question-type="question['@type']"
               :question="question.text"
-              :counter="1" image-path="">
-            </question-card-component></div>
+              :counter="1">
+            </question-card-component>
+            </div>
             <button @click="addNewQuestion" class="btn btn-primary w-100">Neue Frage hinzufügen</button>
           </div>
         </div>

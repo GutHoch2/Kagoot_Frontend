@@ -1,49 +1,46 @@
 <script>
 
-import trueFalseImage from "@/assets/images/true_false.png";
-import multipleChoiceImage from "@/assets/images/true_false.png";
+import trueFalseImagePath from "@/assets/images/true_false.png";
+import multipleChoiceImagePath from "@/assets/images/multiple_choice.png";
 
 export default {
   name: "QuestionCardComponent",
   props: {
-    imagePath : {
-      type: String,
-      required: true
-    },
-    counter : {
+    counter: {
       type: Number,
       required: true
     },
-    question : {
+    question: {
       type: String,
       required: true
     },
-    questionType : {
+    questionType: {
       type: String,
       required: true
     }
   },
-  data(){
+  data() {
     return {
-      trueFalseImage,
-      multipleChoiceImage,
-      currentImage: ''
+      trueFalseImagePath: trueFalseImagePath,
+      multipleChoiceImagePath: multipleChoiceImagePath,
     }
   },
   methods: {
-    getQuestionTypeText(){
-      if(this.questionType === "TrueOrFalseQuestionDTO"){
-        return "Wahr-Falsch-Frage"
+    getQuestionTypeText() {
+      if (this.questionType === "TrueOrFalseQuestionDTO") {
+        return "Richtig-Falsch-Frage"
+      } else if (this.questionType === "OneOfXQuestionDTO") {
+        return "Multiple-Choice-Frage"
       }
     },
-    setImage(){
-      if(this.questionType === "TrueOrFalseQuestionDTO"){
-        this.currentImage = this.trueFalseImage
+    setImage() {
+      if (this.questionType === "TrueOrFalseQuestionDTO") {
+        return this.trueFalseImagePath
+      }
+      if (this.questionType === "OneOfXQuestionDTO") {
+        return this.multipleChoiceImagePath
       }
     }
-  },
-  mounted() {
-    this.setImage();
   }
 }
 </script>
@@ -52,13 +49,14 @@ export default {
   <div class="card mb-3">
     <div class="row g-0">
       <div class="col-4 d-none d-md-block">
-        <img :src="currentImage" class="img-fluid rounded-start" alt="Bild Quiz Typ">
+        <img :src="setImage()" class="img-fluid rounded-start" alt="Bild Quiz Typ">
       </div>
       <div class="col-md-8 col-12">
         <div class="card-body">
-          <h5 class="card-title">Frage {{counter}}:</h5>
-          <p class="card-text">{{question}}</p>
-          <p class="card-text"><small class="text-body-secondary">{{getQuestionTypeText()}}</small></p>
+          <h5 class="card-title">Frage {{ counter }}:</h5>
+          <p class="card-text">{{ question }}</p>
+          <p class="card-text"><small
+            class="text-body-secondary">{{ getQuestionTypeText() }}</small></p>
         </div>
       </div>
     </div>
@@ -67,7 +65,7 @@ export default {
 
 <style scoped>
 @media (min-width: 992px) {
-  .card{
+  .card {
     max-width: 800px
   }
 }

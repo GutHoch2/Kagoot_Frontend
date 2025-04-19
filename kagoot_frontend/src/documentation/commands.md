@@ -27,7 +27,11 @@ npm install vuex@next
 ## 9. Axios installieren
 npm install axios
 
-## 8. Um auf GitHub Pages zu deployen
+## 10 Vue Draggable installieren
+npm install vuedraggable
+
+
+## 11. Um auf GitHub Pages zu deployen
 npm install --save-dev gh-pages   
 "deploy": "gh-pages -d dist" => ergänzen unter scripts in package.json
 base: '/Kagoot_Frontend/', => ergänzen in vite.config.js
