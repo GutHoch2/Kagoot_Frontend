@@ -53,7 +53,7 @@ export default {
       </div>
       <div class="col-md-8 col-12">
         <div class="card-body">
-          <h5 class="card-title">Frage {{ counter }}:</h5>
+          <h5 class="card-title">Frage {{ counter }}</h5>
           <p class="card-text">{{ question }}</p>
           <p class="card-text"><small
             class="text-body-secondary">{{ getQuestionTypeText() }}</small></p>

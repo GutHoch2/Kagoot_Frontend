@@ -29,6 +29,7 @@ npm install axios
 
 ## 10 Vue Draggable installieren
 npm install vuedraggable
+Hinweise: zu Version und node_modules Ordner hier beachten: https://github.com/SortableJS/vue.draggable.next/issues/254
 
 
 ## 11. Um auf GitHub Pages zu deployen
