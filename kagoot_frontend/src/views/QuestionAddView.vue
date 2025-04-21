@@ -61,7 +61,7 @@ export default {
         this.executeRequest('api/quizmanager/question/true-or-false/add', payload);
       }
       console.log("Abgeschickte Frage:", payload);
-      //this.$router.push(`/quiz-editor/${this.quizId}`);
+      this.$router.push(`/quiz-editor/${this.quizId}`);
 
     }
   }

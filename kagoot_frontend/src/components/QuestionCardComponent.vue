@@ -2,6 +2,7 @@
 
 import trueFalseImagePath from "@/assets/images/true_false.png";
 import multipleChoiceImagePath from "@/assets/images/multiple_choice.png";
+import axios from "axios";
 
 export default {
   name: "QuestionCardComponent",
@@ -15,6 +16,10 @@ export default {
       required: true
     },
     questionType: {
+      type: String,
+      required: true
+    },
+    quizId: {
       type: String,
       required: true
     }
@@ -32,6 +37,28 @@ export default {
       } else if (this.questionType === "OneOfXQuestionDTO") {
         return "Multiple-Choice-Frage"
       }
+    },
+    editQuestion() {
+
+    },
+    deleteQuestion() {
+      const token = localStorage.getItem('token');
+
+      axios
+        .post('api/quizmanager/question/delete', this.quizId, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+
+          }
+        })
+        .then((response) => {
+          console.log(response.data);
+          // Emit Event an Parent, damit die Frage entfernt wird
+          this.$emit('question-deleted', this.quizId);
+        }).catch((err) => {
+        console.error("Fehler beim Löschen:", err);
+      });
     },
     setImage() {
       if (this.questionType === "TrueOrFalseQuestionDTO") {
@@ -51,12 +78,21 @@ export default {
       <div class="col-4 d-none d-md-block">
         <img :src="setImage()" class="img-fluid rounded-start" alt="Bild Quiz Typ">
       </div>
-      <div class="col-md-8 col-12">
+      <div class="col-md-8 col-12 d-flex flex-column justify-content-between">
         <div class="card-body">
           <h5 class="card-title">Frage {{ counter }}</h5>
           <p class="card-text">{{ question }}</p>
-          <p class="card-text"><small
-            class="text-body-secondary">{{ getQuestionTypeText() }}</small></p>
+          <p class="card-text">
+            <small class="text-body-secondary">{{ getQuestionTypeText() }}</small></p>
+          {{ quizId }}
+        </div>
+        <div class="m-3 d-flex justify-content-end gap-2">
+          <button @click="editQuestion" class="btn btn-info">
+            <i class="fa-solid fa-pencil fa-2x"></i>
+          </button>
+          <button @click="deleteQuestion" class="btn btn-danger">
+            <i class="fa-solid fa-trash-alt fa-2x"></i>
+          </button>
         </div>
       </div>
     </div>

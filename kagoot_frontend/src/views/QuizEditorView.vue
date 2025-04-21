@@ -39,6 +39,10 @@ export default {
       console.log("Neue Reihenfolge:", this.quiz.questions);
       this.disabled = false;
     },
+    removeQuestion(id) {
+      console.log('removeQuestion aufgerufen mit ID ' + id)
+      this.quiz.questions = this.quiz.questions.filter(q => q.id !== id);
+    },
     saveNewSorting() {
       //TODO: Sorting Request
     }
@@ -69,12 +73,14 @@ export default {
                   <question-card-component
                     :question-type="element['@type']"
                     :question="element.text"
+                    :quiz-id="element.id"
                     :counter="index + 1"
+                    @question-deleted="removeQuestion"
                   />
                 </div>
               </template>
             </draggable>
-            <button @click="addNewQuestion" class="btn btn-primary w-100 me-3"><i class="fa-solid fa-square-plus me-3"></i>Neue Frage hinzufügen</button>
+            <button @click="addNewQuestion" class="btn btn-primary w-100 me-3 d-flex align-items-center justify-content-center"><i class="fa-solid fa-square-plus fa-2x me-3"></i>Neue Frage hinzufügen</button>
           </div>
         </div>
       </header>
