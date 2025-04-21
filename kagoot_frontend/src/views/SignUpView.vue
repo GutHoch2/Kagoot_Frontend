@@ -2,10 +2,11 @@
 import NavbarComponent from "@/components/NavbarComponent.vue";
 import axios from 'axios'
 import ErrorMessageComponent from "@/components/ErrorMessageComponent.vue";
+import PasswordFieldComponent from "@/components/PasswordFieldComponent.vue";
 
 export default {
   name: "SignUp",
-  components: {ErrorMessageComponent, NavbarComponent},
+  components: {PasswordFieldComponent, ErrorMessageComponent, NavbarComponent},
   data() {
     return {
       username: '',
@@ -101,24 +102,8 @@ export default {
                   id="email"
                   placeholder="E-Mail Adresse">
               </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Passwort</label>
-                <input
-                  v-model="password"
-                  type="password"
-                  class="form-control bg-dark text-light border-light"
-                  id="password"
-                  placeholder="Passwort">
-              </div>
-              <div class="mb-3">
-                <label for="confirm-password" class="form-label">Passwort bestätigen</label>
-                <input
-                  v-model="passwordRepetition"
-                  type="password"
-                  class="form-control bg-dark text-light border-light"
-                  id="confirm-password"
-                  placeholder="Passwort bestätigen">
-              </div>
+              <password-field-component label-text="Passwort" v-model="password"></password-field-component>
+              <password-field-component label-text="Passwort bestätigen" v-model="passwordRepetition"></password-field-component>
               <button type="submit" class="btn btn-primary w-100">Konto erstellen</button>
               <error-message-component
                 class="mt-3"
