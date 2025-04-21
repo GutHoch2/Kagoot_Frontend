@@ -29,6 +29,11 @@ export default {
       <div class="card-body">
         <h5 class="card-title">{{ title }}</h5>
         <p class="card-text">{{ description }}</p>
+        <hr>
+        <div class="d-flex justify-content-center align-items-center">
+        <button @click="addNewQuestion" class="btn btn-info w-50 me-3"><i class="fa-solid fa-play"></i></button>
+        <button @click="addNewQuestion" class="btn btn-info w-50 me-3"><i class="fa-solid fa-pencil"></i></button>
+        </div>
       </div>
     </div>
   </a>

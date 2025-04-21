@@ -74,8 +74,7 @@ export default {
                 </div>
               </template>
             </draggable>
-            <button @click="addNewQuestion" class="btn btn-primary w-30 me-3"><i class="fa-solid fa-square-plus me-3"></i>Neue Frage hinzufügen</button>
-            <button @click="saveNewSorting" :disabled="disabled" class="btn btn-primary w-30 ms-3"><i class="fa-solid fa-sort me-3"></i>Reihenfolge speichern</button>
+            <button @click="addNewQuestion" class="btn btn-primary w-100 me-3"><i class="fa-solid fa-square-plus me-3"></i>Neue Frage hinzufügen</button>
           </div>
         </div>
       </header>
