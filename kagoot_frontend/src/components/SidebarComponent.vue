@@ -32,17 +32,17 @@
         <div class="collapse" id="moreLinks">
           <ul class="list-unstyled ps-3">
             <li>
-              <router-link class="nav-link text-black" to="/action1">
+              <router-link class="nav-link text-black" to="#">
                 <i class="fas fa-bolt me-2"></i> Action
               </router-link>
             </li>
             <li>
-              <router-link class="nav-link text-black" to="/action2">
+              <router-link class="nav-link text-black" to="#">
                 <i class="fas fa-puzzle-piece me-2"></i> Another action
               </router-link>
             </li>
             <li>
-              <router-link class="nav-link text-black" to="/something-else">
+              <router-link class="nav-link text-black" to="#">
                 <i class="fas fa-random me-2"></i> Something else
               </router-link>
             </li>

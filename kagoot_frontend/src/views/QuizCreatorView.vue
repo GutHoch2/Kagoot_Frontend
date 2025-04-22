@@ -74,7 +74,7 @@ export default {
                     placeholder="Kurze Beschreibung deines Quizzes">
                     </textarea>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Quiz erstellen</button>
+                <button type="submit" class="btn btn-info w-100">Quiz erstellen</button>
                 <error-message-component
                   class="mt-3"
                   v-if="errors.length"

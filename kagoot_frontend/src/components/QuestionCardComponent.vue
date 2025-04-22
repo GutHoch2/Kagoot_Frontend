@@ -22,6 +22,10 @@ export default {
     quizId: {
       type: String,
       required: true
+    },
+    questionId: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -38,14 +42,14 @@ export default {
         return "Multiple-Choice-Frage"
       }
     },
-    editQuestion() {
-
+    editQuestion(){
+      this.$router.push({path: `/${this.quizId}/edit-question/${this.questionId}`});
     },
     deleteQuestion() {
       const token = localStorage.getItem('token');
 
       axios
-        .post('api/quizmanager/question/delete', this.quizId, {
+        .post('api/quizmanager/question/delete', this.questionId, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -55,7 +59,7 @@ export default {
         .then((response) => {
           console.log(response.data);
           // Emit Event an Parent, damit die Frage entfernt wird
-          this.$emit('question-deleted', this.quizId);
+          this.$emit('question-deleted', this.questionId);
         }).catch((err) => {
         console.error("Fehler beim Löschen:", err);
       });
@@ -84,7 +88,6 @@ export default {
           <p class="card-text">{{ question }}</p>
           <p class="card-text">
             <small class="text-body-secondary">{{ getQuestionTypeText() }}</small></p>
-          {{ quizId }}
         </div>
         <div class="m-3 d-flex justify-content-end gap-2">
           <button @click="editQuestion" class="btn btn-info">

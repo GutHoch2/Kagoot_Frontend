@@ -59,9 +59,6 @@ export default {
       console.log('removeQuestion aufgerufen mit ID ' + id)
       this.quiz.questions = this.quiz.questions.filter(q => q.id !== id);
     },
-    saveNewSorting() {
-      //TODO: Sorting Request
-    }
   }
 }
 </script>
@@ -89,14 +86,15 @@ export default {
                   <question-card-component
                     :question-type="element['@type']"
                     :question="element.text"
-                    :quiz-id="element.id"
+                    :quiz-id="quiz.id"
                     :counter="index + 1"
+                    :question-id="element.id"
                     @question-deleted="removeQuestion"
                   />
                 </div>
               </template>
             </draggable>
-            <button @click="addNewQuestion" class="btn btn-primary w-100 me-3 d-flex align-items-center justify-content-center"><i class="fa-solid fa-square-plus fa-2x me-3"></i>Neue Frage hinzufügen</button>
+            <button @click="addNewQuestion" class="btn btn-info w-100 me-3 d-flex align-items-center justify-content-center"><i class="fa-solid fa-square-plus fa-2x me-3"></i>Neue Frage hinzufügen</button>
           </div>
         </div>
       </header>

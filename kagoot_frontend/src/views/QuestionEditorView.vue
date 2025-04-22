@@ -3,13 +3,13 @@ import ErrorMessageComponent from "@/components/ErrorMessageComponent.vue";
 import axios from "axios";
 
 export default {
-  name: "QuestionAddComponent",
+  name: "QuestionEditorView",
   components: {ErrorMessageComponent},
   data() {
     return {
-      questionType: '',
+      questionType: 'multipleChoice',
       question: '',
-      answerTimeSeconds: 20,
+      answerTimeSeconds: 30,
       trueFalseAnswer: false,
       multipleChoiceOptions: ['', '', ''],
       multipleChoiceCorrectOptionIndex: null,
@@ -18,7 +18,13 @@ export default {
     }
   },
   mounted() {
-    this.quizId = this.$route.params.id;
+    this.quizId = this.$route.params.quizId;
+    this.questionId = this.$route.params.questionId;
+    console.log(this.quizId);
+
+    if(this.questionId){
+      console.log("Edit mode");
+    }
   },
   methods: {
     executeRequest(urlPath, payload) {
@@ -80,7 +86,6 @@ export default {
               class="form-select bg-dark text-light border-light"
               id="questionType"
               required>
-              <option disabled selected hidden value="">Bitte wähle einen Fragetyp</option>
               <option value="multipleChoice">Multiple Choice</option>
               <option value="trueFalse">Wahr / Falsch</option>
             </select>
@@ -93,7 +98,7 @@ export default {
                 type="text"
                 class="form-control bg-dark text-light border-light"
                 id="title"
-                placeholder="Bitte gib einen Quiz-Titel ein"
+                placeholder="Bitte Frage eingeben!"
                 required>
             </div>
             <div class="mb-3">
@@ -103,7 +108,6 @@ export default {
                 class="form-select bg-dark text-light border-light"
                 id="questionType"
                 required>
-                <option disabled selected hidden value="">Bitte wähle die Antwortdauer</option>
                 <option value=10>10 Sekunden</option>
                 <option value=20>20 Sekunden</option>
                 <option value=30>30 Sekunden</option>

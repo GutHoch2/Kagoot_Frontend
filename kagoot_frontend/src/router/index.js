@@ -8,7 +8,7 @@ import DashboardView from "@/views/DashboardView.vue";
 import MyQuizzesView from "@/views/MyQuizzesView.vue";
 import QuizCreatorView from "@/views/QuizCreatorView.vue";
 import QuizEditorView from "@/views/QuizEditorView.vue";
-import QuestionAddView from "@/views/QuestionAddView.vue";
+import QuestionEditorView from "@/views/QuestionEditorView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,9 +49,14 @@ const router = createRouter({
       component: QuizCreatorView,
     },
     {
-      path: '/:id/add-question',
+      path: '/:quizId/add-question',
+      name: '/add-question',
+      component: QuestionEditorView
+    },
+    {
+      path: '/:quizId/edit-question/:questionId',
       name: 'add-question',
-      component: QuestionAddView
+      component: QuestionEditorView
     },
     {
       path: '/quiz-editor/:id',
