@@ -11,18 +11,19 @@ export default {
     return {
       quiz : {},
       quizId : '',
-      disabled: true
+      disabled: true,
+      token: localStorage.getItem('token')
     }
   },
   mounted() {
-    const token = localStorage.getItem('token');
+
     this.quizId = this.$route.params.id;
     console.log(this.quizId);
 
     axios
     .post('api/quizmanager/quiz/get', this.quizId, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json'
       }
     })
@@ -36,7 +37,22 @@ export default {
       this.$router.push({path: `/${this.quizId}/add-question/`});
     },
     onDragEnd() {
+      const data = {
+        quizUUID : this.quizId,
+        questionUuids: []
+      }
+
+      for(let i = 0;  i < this.quiz.questions.length; i++){
+        data.questionUuids.push(this.quiz.questions[i].id);
+      }
+
       console.log("Neue Reihenfolge:", this.quiz.questions);
+      axios
+        .post('api/quizmanager/quiz/change-question-order', data, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          }
+        })
       this.disabled = false;
     },
     removeQuestion(id) {
