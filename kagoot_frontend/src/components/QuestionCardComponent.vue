@@ -1,7 +1,7 @@
 <script>
 
-import trueFalseImagePath from "@/assets/images/true_false.png";
-import multipleChoiceImagePath from "@/assets/images/multiple_choice.png";
+import trueFalseImagePath from "@/assets/images/monkey/True_or_False_Question_Hell.png";
+import multipleChoiceImagePath from "@/assets/images/monkey/One_of_X_Question.png";
 import axios from "axios";
 
 export default {
@@ -65,7 +65,7 @@ export default {
       });
     },
     setImage() {
-      if (this.questionType === "TrueOrFalseQuestionDTO") {
+      if (this.questionType === "TrueOrFalseQuestionWithAnswerDTO") {
         return this.trueFalseImagePath
       }
       if (this.questionType === "OneOfXQuestionDTO") {

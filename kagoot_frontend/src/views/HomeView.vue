@@ -1,8 +1,8 @@
 <script>
 
 import HomeCardComponent from "@/components/HomeCardComponent.vue";
-import playingImage from "@/assets/images/playing_jump.jpg";
-import creatingImage from "@/assets/images/creating.jpg";
+import playingImage from "@/assets/images/monkey/Play_Game_Grun_Schwanz.png";
+import creatingImage from "@/assets/images/monkey/Create_Game_Gelb_Schwanz_Brille.png";
 
 export default {
   name: "HomeView",

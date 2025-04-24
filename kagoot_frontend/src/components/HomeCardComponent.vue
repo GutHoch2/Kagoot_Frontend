@@ -57,7 +57,7 @@ export default {
 }
 
 .card-img-top {
-  height: 30vh;
+  height: 50vh;
   object-fit: cover;
 }
 
