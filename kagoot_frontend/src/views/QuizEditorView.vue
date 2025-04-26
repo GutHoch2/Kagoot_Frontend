@@ -16,7 +16,6 @@ export default {
     }
   },
   mounted() {
-
     this.quizId = this.$route.params.id;
     console.log(this.quizId);
 
@@ -55,9 +54,9 @@ export default {
         })
       this.disabled = false;
     },
-    removeQuestion(id) {
-      console.log('removeQuestion aufgerufen mit ID ' + id)
-      this.quiz.questions = this.quiz.questions.filter(q => q.id !== id);
+    removeQuestion(questionId) {
+      console.log('removeQuestion aufgerufen mit ID ' + questionId)
+      this.quiz.questions = this.quiz.questions.filter(q => q.id !== questionId);
     },
   }
 }

@@ -1,189 +1,167 @@
 <script>
+import MultipleChoiceQuestionComponent from "@/components/MultipleChoiceQuestionComponent.vue";
+import TrueFalseQuestionComponent from "@/components/TrueFalseQuestionComponent.vue";
 import ErrorMessageComponent from "@/components/ErrorMessageComponent.vue";
 import axios from "axios";
 
 export default {
   name: "QuestionEditorView",
-  components: {ErrorMessageComponent},
+  components: {
+    MultipleChoiceQuestionComponent,
+    TrueFalseQuestionComponent,
+    ErrorMessageComponent,
+  },
   data() {
     return {
-      questionType: 'multipleChoice',
-      question: '',
+      questionType: "multipleChoice",
+      title: "",
       answerTimeSeconds: 30,
-      trueFalseAnswer: false,
-      multipleChoiceOptions: ['', '', ''],
-      multipleChoiceCorrectOptionIndex: null,
-      quizId: '',
-      errors: []
-    }
+      amountPoints: 20,
+      questionTypeSpecificData: {},
+      quizId: "",
+      questionId: "",
+      errors: [],
+    };
   },
   mounted() {
     this.quizId = this.$route.params.quizId;
-    this.questionId = this.$route.params.questionId;
-    console.log(this.quizId);
-
-    if(this.questionId){
-      console.log("Edit mode");
-    }
+    this.questionId = this.$route.params.questionId ?? '';
   },
   methods: {
-    executeRequest(urlPath, payload) {
-      const token = localStorage.getItem('token');
-
-      axios
-        .post(urlPath, payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        })
-    },
-    addOption() {
-      this.multipleChoiceOptions.push('');
-    },
-    removeOption(index) {
-      this.multipleChoiceOptions.splice(index, 1);
-    },
     submitForm() {
-      let payload = {
-        "score": 10,
-        "seconds": 20,
-        text: this.question,
-        "positionInQuiz": 0,
-        "quizUUID": this.quizId,
+      const payload = {
+        quizUUID: this.quizId,
+        text: this.title,
+        seconds: this.answerTimeSeconds,
+        ...this.questionTypeSpecificData, // Spread-Operator, ergänzt alles von questionTypeSpecificData zu payload
       };
 
+      if (!this.validatePayload(payload)) {
+        return;
+      }
+
+      const endpoint =this.setEndpoint();
+
+      const token = localStorage.getItem('token');
+      axios.post(endpoint, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      }).then(() => {
+        this.goBackToQuizEditorView();
+      }).catch(error => {
+        console.error(error);
+        this.errors.push("Fehler beim Speichern der Frage.");
+      });
+    },
+    setEndpoint(){
+      if(this.questionId === ''){
+        switch(this.questionType){
+          case 'multipleChoice' :
+            return '/api/quizmanager/question/one-of-x/add';
+          case 'trueFalse':
+            return '/api/quizmanager/question/true-or-false/add';
+        }
+      }else {
+        switch (this.questionType) {
+          case 'multipleChoice' :
+            return '/api/quizmanager/question/one-of-x/update';
+          case 'trueFalse':
+            return '/api/quizmanager/question/true-or-false/update';
+        }
+      }
+    },
+    goBackToQuizEditorView() {
+      this.$router.push(`/quiz-editor/${this.quizId}`);
+    },
+    validatePayload(payload) {
+      this.errors = [];
+
       if (this.questionType === 'multipleChoice') {
-        payload.options = this.multipleChoiceOptions;
-        payload.seconds = this.answerTimeSeconds;
-        if(!(this.multipleChoiceCorrectOptionIndex === null)){
-          payload.correctOptionNumber = 0;
-          this.executeRequest('/api/quizmanager/question/one-of-x/add', payload);
-        }else{
-          this.errors.push("Bitte die richtige Antwort als richtig markieren.")
+        if (payload.correctOptionNumber === undefined || payload.correctOptionNumber === null) {
+          this.errors.push("Bitte eine richtige Antwort auswählen.");
         }
       } else if (this.questionType === 'trueFalse') {
-        payload.correct = this.trueFalseAnswer;
-        this.executeRequest('api/quizmanager/question/true-or-false/add', payload);
+        if (payload.correct === undefined) {
+          this.errors.push("Bitte 'Wahr' oder 'Falsch' auswählen.");
+        }
       }
-      console.log("Abgeschickte Frage:", payload);
-      this.$router.push(`/quiz-editor/${this.quizId}`);
 
+      return this.errors.length === 0;
     }
   }
-}
+};
 </script>
 
 <template>
-  <div class="row w-100 justify-content-center gx-5 mt-3">
-    <div class="col-md-8 col-12 mb-4">
-      <div class="card bg-dark border-light text-light">
-        <div class="card-body p-5">
-          <div class="mb-3">
-            <label for="questionType" class="form-label">Fragetyp</label>
-            <select
-              v-model="questionType"
-              class="form-select bg-dark text-light border-light"
-              id="questionType"
-              required>
-              <option value="multipleChoice">Multiple Choice</option>
-              <option value="trueFalse">Wahr / Falsch</option>
-            </select>
-          </div>
-          <form @submit.prevent="submitForm">
-            <div class="mb-3">
-              <label for="titel" class="form-label">Frage</label>
-              <input
-                v-model="question"
-                type="text"
-                class="form-control bg-dark text-light border-light"
-                id="title"
-                placeholder="Bitte Frage eingeben!"
-                required>
-            </div>
-            <div class="mb-3">
-              <label for="questionType" class="form-label">Antwortdauer</label>
-              <select
-                v-model="answerTimeSeconds"
-                class="form-select bg-dark text-light border-light"
-                id="questionType"
-                required>
-                <option value=10>10 Sekunden</option>
-                <option value=20>20 Sekunden</option>
-                <option value=30>30 Sekunden</option>
-                <option value=45>45 Sekunden</option>
-                <option value=60>1 Minute</option>
-                <option value=120>2 Minuten</option>
-                <option value=180>3 Minuten</option>
-                <option value=300>5 Minuten</option>
-              </select>
-            </div>
-
-            <!-- Dynamische Eingabefelder basierend auf Fragetyp -->
-            <div v-if="questionType === 'multipleChoice'" class="mb-3">
-              <label class="form-label">Antwortmöglichkeiten</label>
-              <div v-for="(option, index) in multipleChoiceOptions" :key="index"
-                   class="mb-2 d-flex align-items-center">
-                <!-- Versteckter Radio Button -->
-                <input
-                  v-model="multipleChoiceCorrectOptionIndex"
-                  type="radio"
-                  :value="index"
-                  name="correctAnswer"
-                  class="d-none"
-                  :id="'correctAnswer' + index"
-                />
-
-                <!-- Häkchen als Label für den versteckten Radio -->
-                <label :for="'correctAnswer' + index" class="me-2" style="cursor: pointer;">
-                  <i
-                    class="fa-solid"
-                    :class="multipleChoiceCorrectOptionIndex === index ? 'fa-check-circle text-success' : 'fa-circle-xmark text-danger'"
-                    style="font-size: 1.2rem;"
-                  ></i>
-                </label>
-                <input
-                  v-model="multipleChoiceOptions[index]"
-                  type="text"
-                  class="form-control bg-dark text-light border-light"
-                  :placeholder="'Antwort ' + (index + 1)">
-                <button type="button" v-if="multipleChoiceOptions.length > 3"
-                        class="btn btn-outline-light btn-sm ms-2" @click="removeOption(index)">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </div>
-              <button type="button" v-if="multipleChoiceOptions.length < 8" class="btn btn-outline-light btn-sm mt-2" @click="addOption">
-                <i class="fa-solid fa-square-plus me-2"></i> Antwort hinzufügen
-              </button>
-            </div>
-
-            <div v-else-if="questionType === 'trueFalse'" class="mb-3">
-              <label class="form-label">Richtige Antwort</label>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" id="true" value="true"
-                       v-model="trueFalseAnswer">
-                <label class="form-check-label" for="true">Wahr</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" id="false" value="false"
-                       v-model="trueFalseAnswer">
-                <label class="form-check-label" for="false">Falsch</label>
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Frage erstellen</button>
-            <error-message-component
-              class="mt-3"
-              v-if="errors.length"
-              :errors="errors"
-            ></error-message-component>
-          </form>
-        </div>
+  <div class="container mt-4">
+    <form @submit.prevent="submitForm">
+      <div class="mb-3">
+        <label for="questionType" class="form-label">Fragetyp</label>
+        <select v-model="questionType" class="form-select bg-dark text-light border-light" id="questionType">
+          <option value="multipleChoice">Multiple Choice</option>
+          <option value="trueFalse">Richtig & falsch</option>
+        </select>
       </div>
-    </div>
+
+      <div class="mb-3">
+        <label for="title" class="form-label">Fragetitel</label>
+        <input
+          v-model="title"
+          type="text"
+          class="form-control bg-dark text-light border-light"
+          id="title"
+          placeholder="Bitte Frage eingeben!"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Antwortdauer</label>
+        <select v-model="answerTimeSeconds" class="form-select bg-dark text-light border-light">
+          <option value="10">10 Sekunden</option>
+          <option value="20">20 Sekunden</option>
+          <option value="30">30 Sekunden</option>
+          <option value="45">45 Sekunden</option>
+          <option value="60">1 Minute</option>
+          <option value="120">2 Minuten</option>
+          <option value="180">3 Minuten</option>
+          <option value="300">5 Minuten</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Punktezahl</label>
+        <select v-model="amountPoints" class="form-select bg-dark text-light border-light">
+          <option value="10">10 Punkte</option>
+          <option value="20">20 Punkte</option>
+          <option value="30">30 Punkte</option>
+        </select>
+      </div>
+
+      <!-- Dynamische Fragetyp-Komponente -->
+      <multiple-choice-question-component
+        v-if="questionType === 'multipleChoice'"
+        :question-id="questionId"
+        @update:questionData="questionTypeSpecificData = $event"
+      />
+      <true-false-question-component
+        v-else-if="questionType === 'trueFalse'"
+        @update:questionData="questionTypeSpecificData = $event"
+      />
+
+      <div class="d-flex justify-content-between gap-2">
+        <button @click="goBackToQuizEditorView" class="btn btn-primary flex-fill mt-3 mb-3">
+          <i class="fa-solid fa-arrow-left me-2"></i>Zurück</button>
+        <button type="submit" class="btn btn-primary flex-fill mt-3 mb-3">
+          Frage speichern<i class="fa-solid fa-floppy-disk ms-2"></i></button>
+      </div>
+      <error-message-component v-if="errors.length" :errors="errors" class="mt-3"/>
+    </form>
   </div>
 </template>
 
 <style scoped>
-
+/* optionales Styling */
 </style>
