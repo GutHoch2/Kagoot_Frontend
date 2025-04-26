@@ -13,7 +13,7 @@ export default {
   },
   data() {
     return {
-      questionType: "multipleChoice",
+      questionType: "",
       title: "",
       answerTimeSeconds: 30,
       amountPoints: 20,
@@ -26,15 +26,43 @@ export default {
   mounted() {
     this.quizId = this.$route.params.quizId;
     this.questionId = this.$route.params.questionId ?? '';
+    console.log(`questionId = ${ this.questionId }`);
+    if(this.questionId !== ''){
+      console.log("update mode")
+      this.initialLoad();
+    }
   },
   methods: {
+    initialLoad() {
+      const token = localStorage.getItem('token');
+      const endpoint = '/api/quizmanager/question/get';
+
+      axios.post(endpoint, this.questionId, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      }).then((response) => {
+        this.questionType = response.data.OBJECT["@type"];
+        console.log(this.questionType);
+        this.title = response.data.OBJECT.text;
+        this.answerTimeSeconds = response.data.OBJECT.seconds;
+        this.amountPoints = response.data.OBJECT.score;
+      }).catch(error => {
+        console.error(error);
+      });
+    },
     submitForm() {
       const payload = {
         quizUUID: this.quizId,
         text: this.title,
         seconds: this.answerTimeSeconds,
+        amountPoints: this.amountPoints,
         ...this.questionTypeSpecificData, // Spread-Operator, ergänzt alles von questionTypeSpecificData zu payload
       };
+      if(this.questionId !== '') {
+        payload.questionUUID = this.questionId;
+      }
 
       if (!this.validatePayload(payload)) {
         return;
@@ -58,16 +86,16 @@ export default {
     setEndpoint(){
       if(this.questionId === ''){
         switch(this.questionType){
-          case 'multipleChoice' :
+          case 'OneOfXQuestionDTO' :
             return '/api/quizmanager/question/one-of-x/add';
-          case 'trueFalse':
+          case 'TrueOrFalseQuestionWithAnswerDTO':
             return '/api/quizmanager/question/true-or-false/add';
         }
       }else {
         switch (this.questionType) {
-          case 'multipleChoice' :
+          case 'OneOfXQuestionDTO' :
             return '/api/quizmanager/question/one-of-x/update';
-          case 'trueFalse':
+          case 'TrueOrFalseQuestionWithAnswerDTO':
             return '/api/quizmanager/question/true-or-false/update';
         }
       }
@@ -78,11 +106,11 @@ export default {
     validatePayload(payload) {
       this.errors = [];
 
-      if (this.questionType === 'multipleChoice') {
+      if (this.questionType === 'OneOfXQuestionDTO') {
         if (payload.correctOptionNumber === undefined || payload.correctOptionNumber === null) {
           this.errors.push("Bitte eine richtige Antwort auswählen.");
         }
-      } else if (this.questionType === 'trueFalse') {
+      } else if (this.questionType === 'TrueOrFalseQuestionWithAnswerDTO') {
         if (payload.correct === undefined) {
           this.errors.push("Bitte 'Wahr' oder 'Falsch' auswählen.");
         }
@@ -100,8 +128,8 @@ export default {
       <div class="mb-3">
         <label for="questionType" class="form-label">Fragetyp</label>
         <select v-model="questionType" class="form-select bg-dark text-light border-light" id="questionType">
-          <option value="multipleChoice">Multiple Choice</option>
-          <option value="trueFalse">Richtig & falsch</option>
+          <option value="OneOfXQuestionDTO">Multiple Choice</option>
+          <option value="TrueOrFalseQuestionWithAnswerDTO">Richtig oder falsch</option>
         </select>
       </div>
 
@@ -134,6 +162,7 @@ export default {
       <div class="mb-3">
         <label class="form-label">Punktezahl</label>
         <select v-model="amountPoints" class="form-select bg-dark text-light border-light">
+          <option value="0">0 Punkte</option>
           <option value="10">10 Punkte</option>
           <option value="20">20 Punkte</option>
           <option value="30">30 Punkte</option>
@@ -142,12 +171,12 @@ export default {
 
       <!-- Dynamische Fragetyp-Komponente -->
       <multiple-choice-question-component
-        v-if="questionType === 'multipleChoice'"
+        v-if="questionType === 'OneOfXQuestionDTO'"
         :question-id="questionId"
         @update:questionData="questionTypeSpecificData = $event"
       />
       <true-false-question-component
-        v-else-if="questionType === 'trueFalse'"
+        v-else-if="questionType === 'TrueOrFalseQuestionWithAnswerDTO'"
         @update:questionData="questionTypeSpecificData = $event"
       />
 

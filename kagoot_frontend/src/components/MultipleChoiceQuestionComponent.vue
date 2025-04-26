@@ -4,6 +4,12 @@ import axios from "axios";
 export default {
   name: "MultipleChoiceQuestionComponent",
   emits: ["update:questionData"],
+  props: {
+    updateOptions : {
+      type: Array,
+      required: false,
+    }
+  },
   data() {
     return {
       options: ['', '', ''],
@@ -23,9 +29,7 @@ export default {
   },
   mounted() {
     this.questionId = this.$route.params.questionId ?? '';
-    console.log(`questionId = ${ this.questionId }`);
     if(this.questionId !== ''){
-      console.log("update mode")
       this.initialLoad();
     }
   },
@@ -40,7 +44,6 @@ export default {
           'Content-Type': 'application/json',
         }
       }).then((response) => {
-        console.log(response.data.OBJECT)
         this.options = [];
         const dataOptions = response.data.OBJECT.options;
         for(let i = 0; i < dataOptions.length; i++) {
