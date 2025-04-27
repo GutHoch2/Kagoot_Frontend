@@ -26,6 +26,10 @@ export default {
     questionId: {
       type: String,
       required: true
+    },
+    isAdvertising: {
+      type: Boolean,
+      required: true
     }
   },
   data() {
@@ -48,8 +52,13 @@ export default {
     deleteQuestion() {
       const token = localStorage.getItem('token');
 
+      const payload = {
+        quizId: this.quizId,
+        questionId: this.questionId,
+      }
+
       axios
-        .post('api/quizmanager/question/delete', this.questionId, {
+        .post('api/quizmanager/question/delete', payload, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -90,10 +99,10 @@ export default {
             <small class="text-body-secondary">{{ getQuestionTypeText() }}</small></p>
         </div>
         <div class="m-3 d-flex justify-content-end gap-2">
-          <button @click="editQuestion" class="btn btn-info">
+          <button @click="editQuestion" class="btn btn-info" :disabled="isAdvertising">
             <i class="fa-solid fa-pencil fa-2x"></i>
           </button>
-          <button @click="deleteQuestion" class="btn btn-danger">
+          <button @click="deleteQuestion" class="btn btn-danger" :disabled="isAdvertising">
             <i class="fa-solid fa-trash-alt fa-2x"></i>
           </button>
         </div>

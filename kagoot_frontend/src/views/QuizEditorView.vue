@@ -88,6 +88,7 @@ export default {
                     :quiz-id="quiz.id"
                     :counter="index + 1"
                     :question-id="element.id"
+                    :is-advertising="element.advertising"
                     @question-deleted="removeQuestion"
                   />
                 </div>
