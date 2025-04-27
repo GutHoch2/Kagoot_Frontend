@@ -19,6 +19,7 @@ export default {
     submitForm() {
       const quiz = {
         title: this.title,
+        description: this.description,
       };
 
       const token = localStorage.getItem('token');

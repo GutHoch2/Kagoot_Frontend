@@ -68,7 +68,7 @@ export default {
       class="container-fluid bg-dark text-light py-5 min-vh-100 d-flex flex-column align-items-center justify-content-center">
       <header class="text-center mb-5">
         <h1 class="display-3 fw-bold text-glow">Quiz: {{quiz.title}}</h1>
-        <p class="fs-4 text-secondary fst-italic">Gestalte dein ganz besonderes Quiz!</p>
+        <p class="fs-4 text-secondary fst-italic">Beschreibung: {{quiz.description}}</p>
         <div class="row">
           <div>
             <draggable
