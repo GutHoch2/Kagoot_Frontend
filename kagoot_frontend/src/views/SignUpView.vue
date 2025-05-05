@@ -42,6 +42,7 @@ export default {
         const formData = {
           mail: this.email,
           plaintextPassword: this.password,
+          name: this.username
         }
         console.log(formData);
         axios.post('api/signup/quizmaster', formData)
