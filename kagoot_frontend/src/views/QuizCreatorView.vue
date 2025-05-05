@@ -2,24 +2,30 @@
 import axios from "axios";
 import LayoutWrapper from "@/components/LayoutWrapper.vue";
 import ErrorMessageComponent from "@/components/ErrorMessageComponent.vue";
+import ImageFilePickerComponent from "@/components/ImageFilePickerComponent.vue";
 
 export default {
   name: "QuizCreatorView",
-  components: {ErrorMessageComponent, LayoutWrapper},
+  components: {ImageFilePickerComponent, ErrorMessageComponent, LayoutWrapper},
   data() {
     return {
       imagePath: "",
       title: '',
       description: '',
+      quizImageBase64: null,
       buttonLink: '',
       errors: []
     }
   },
   methods: {
+    handleImageFileSelected(base64String){
+      this.quizImageBase64 = base64String
+    },
     submitForm() {
       const quiz = {
         title: this.title,
         description: this.description,
+        image: this.quizImageBase64
       };
 
       const token = localStorage.getItem('token');
@@ -74,6 +80,11 @@ export default {
                     id="description"
                     placeholder="Kurze Beschreibung deines Quizzes">
                     </textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Quiz-Coverbild</label>
+                  <image-file-picker-component
+                  @onImageFileSelected="handleImageFileSelected"></image-file-picker-component>
                 </div>
                 <button type="submit" class="btn btn-info w-100">Quiz erstellen</button>
                 <error-message-component

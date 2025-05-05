@@ -22,16 +22,18 @@ export default {
   mounted() {
     const token = localStorage.getItem('token');
 
-    axios
-      .post('api/quizmaster/get-all-about-me', {}, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+    axios.get('api/quizmaster/get-all-about-me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         console.log(response.data.OBJECT.quizzes);
         this.quizzes = response.data.OBJECT.quizzes;
       })
+      .catch((error) => {
+        console.error('Fehler beim Laden der Quizzes:', error);
+      });
   }
 }
 </script>
