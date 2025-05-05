@@ -123,7 +123,8 @@ export default {
 </script>
 
 <template>
-  <div class="container mt-4">
+  <div
+    class="container-lg bg-dark text-light p-5 py-5 align-items-center justify-content-center">
     <form @submit.prevent="submitForm">
       <div class="mb-3">
         <label for="questionType" class="form-label">Fragetyp</label>

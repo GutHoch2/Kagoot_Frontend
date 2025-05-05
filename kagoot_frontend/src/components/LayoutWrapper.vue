@@ -1,14 +1,34 @@
 <template>
-  <div class="vh-100 d-flex flex-column">
-    <navbar-component @toggleSidebar="toggleSidebar" />
+  <div class="d-flex flex-column">
+    <!-- Navbar oben -->
+    <navbar-component @toggleSidebar="toggleSidebar"/>
 
-    <div class="d-flex flex-grow-1 position-relative bg-dark">
+    <!-- Mobile Sidebar unter Navbar -->
+    <sidebar-component
+      v-if="isMobile && !isCollapsed"
+      class="bg-info px-3 py-2"
+    />
+
+    <!-- Mobile Content -->
+    <div
+      v-if="isMobile"
+      class="flex-grow-1 px-4 py-3 bg-dark"
+    >
+      <slot/>
+    </div>
+
+    <!-- Desktop Layout mit Sidebar links -->
+    <div
+      v-else
+      class="d-flex bg-dark"
+      style="height: calc(100vh - 56px);"
+    >
       <sidebar-component
-        v-show="!isMobile || !isCollapsed"
-        class="sidebar bg-info"
+        v-show="!isCollapsed"
+        class="sidebar bg-info overflow-auto"
       />
       <main class="flex-grow-1 p-4 overflow-auto">
-        <slot />
+        <slot/>
       </main>
     </div>
   </div>
@@ -20,11 +40,14 @@ import SidebarComponent from './SidebarComponent.vue'
 
 export default {
   name: 'LayoutWrapper',
-  components: { NavbarComponent, SidebarComponent },
+  components: {
+    NavbarComponent,
+    SidebarComponent
+  },
   data() {
     return {
       isMobile: false,
-      isCollapsed: false,
+      isCollapsed: true
     }
   },
   methods: {
@@ -32,7 +55,7 @@ export default {
       this.isCollapsed = !this.isCollapsed
     },
     checkScreen() {
-      this.isMobile = window.innerWidth < 768
+      this.isMobile = window.innerWidth < 576
       if (!this.isMobile) {
         this.isCollapsed = false
       }
@@ -51,13 +74,14 @@ export default {
 <style scoped>
 .sidebar {
   width: 200px;
+  overflow-y: auto;
 }
 
 @media (max-width: 575px) {
   .sidebar {
-    position: absolute;
-    left: 0;
-    z-index: 1040;
+    width: 100%;
+    height: auto;
+    overflow: visible;
   }
 }
 </style>

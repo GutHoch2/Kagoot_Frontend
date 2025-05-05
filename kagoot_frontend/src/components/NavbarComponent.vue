@@ -25,7 +25,7 @@ export default {
 
 
 <template>
-  <nav class="navbar navbar-dark px-3 justify-content-between">
+  <nav class="navbar navbar-dark px-3 justify-content-between bg-black">
     <router-link class="navbar-brand" to="/">Kagoot</router-link>
 
     <div class="d-flex align-items-center">

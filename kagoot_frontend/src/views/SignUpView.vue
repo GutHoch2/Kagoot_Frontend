@@ -72,7 +72,7 @@ export default {
 <template>
   <navbar-component :show-additional-content="false"></navbar-component>
   <div
-    class="container-fluid bg-dark text-light py-5 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+    class="container-fluid bg-dark text-light py-5 d-flex flex-column align-items-center justify-content-center">
     <header class="text-center mb-5">
       <h1 class="display-3 fw-bold text-glow">Erstelle ein Konto</h1>
       <p class="fs-4 text-secondary fst-italic">Werde Teil von Kagoot und starte deine
@@ -103,8 +103,10 @@ export default {
                   id="email"
                   placeholder="E-Mail Adresse">
               </div>
-              <password-field-component label-text="Passwort" v-model="password"></password-field-component>
-              <password-field-component label-text="Passwort bestätigen" v-model="passwordRepetition"></password-field-component>
+              <password-field-component label-text="Passwort"
+                                        v-model="password"></password-field-component>
+              <password-field-component label-text="Passwort bestätigen"
+                                        v-model="passwordRepetition"></password-field-component>
               <button type="submit" class="btn btn-primary w-100">Konto erstellen</button>
               <error-message-component
                 class="mt-3"
